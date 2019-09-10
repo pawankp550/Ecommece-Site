@@ -1,0 +1,27 @@
+{
+  "name": "Ecommerce-Site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+     "start": "node src/app.js",
+     "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pawankp550/Ecommerce-Site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pawankp550/Ecommerce-Site/issues"
+  },
+  "homepage": "https://github.com/pawankp550/Ecommerce-Site#readme",
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.0",
+    "nodemon": "^1.19.2"
+  }
+}
