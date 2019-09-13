@@ -1,14 +1,23 @@
 const User = require('../models/user')
+const { errorHandler } = require('../helpers/dbErrorHandlers')
 
 exports.signup = async (req, res) => {
-    console.log('insignup')
     const user = new User(req.body)
-    console.log(user)
     try{
         const savedUser = await user.save()
-        res.status(201).send(savedUser)
+        const publicProfile = savedUser.getPublicProfile()
+        res.status(201).send(publicProfile)
     }
     catch (e) {
         res.status(400).send(e)
+    }
+}
+
+exports.signin = async (req, res) => {
+    try{
+        const user = await User.findByCredentials(req.body)
+        
+    } catch (e) {
+        res.status(404).send(e)
     }
 }

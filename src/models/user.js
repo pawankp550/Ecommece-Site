@@ -14,7 +14,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        validate: function (value) {
+        validate(value) {
             if(!validator.isEmail(value)){
                 throw new Error('email is not valid')
             }
@@ -58,4 +58,29 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-module.exports = mongoose.model('User', userSchema)
+// filter user info to send back
+userSchema.methods.getPublicProfile = function () {
+    const user = this
+    const userObject = user.toObject()
+    delete userObject.password
+    return userObject
+}
+
+// check is user is present and authenticate
+userSchema.statics.findByCredentials = async function ({email, password}) {
+    const user = await User.findOne({ email: email })
+    if (!user) {
+        throw new Error('user not present')
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if (!isMatch) {
+        throw new Error('email or password is wrong')
+    }
+
+    return user
+}
+
+const User = mongoose.model('User', userSchema)
+module.exports = User
