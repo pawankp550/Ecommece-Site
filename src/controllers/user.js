@@ -16,8 +16,16 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
     try{
         const user = await User.findByCredentials(req.body)
-        
+        const publicProfile = user.getPublicProfile()
+        const token = await user.createWebToken()
+        res.cookie('tkn', token, { expire: new Date() + 9999 })
+        res.status(200).send({ user: publicProfile, token })
     } catch (e) {
         res.status(404).send(e)
     }
+}
+
+exports.signout = (req, res) => {
+    res.clearCookie('tkn')
+    res.status(200).send({ message: 'signout successfull' })
 }

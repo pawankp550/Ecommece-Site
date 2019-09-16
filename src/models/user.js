@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const validator = require('validator')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const userSchema = new Schema({
     name: {
@@ -58,6 +59,13 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
+// Instance method for adding JWT in user details
+userSchema.methods.createWebToken = async function () {
+    const User = this
+    const Token = await jwt.sign({_id: User._id}, process.env.TokenText )
+    return Token
+}
+
 // filter user info to send back
 userSchema.methods.getPublicProfile = function () {
     const user = this
@@ -81,6 +89,15 @@ userSchema.statics.findByCredentials = async function ({email, password}) {
 
     return user
 }
+
+// // create webToken
+// userSchema.methods.createWebToken = async function () {
+//     cosole.log('in cred')
+//     const User = this
+//     console.log('crete sd' + User)
+//     const Token = await jwt.sign({_id: User._id}, process.env.TokenText )
+//     return Token
+// }
 
 const User = mongoose.model('User', userSchema)
 module.exports = User
