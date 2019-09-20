@@ -1,31 +1,15 @@
 const User = require('../models/user')
-const { errorHandler } = require('../helpers/dbErrorHandlers')
 
-exports.signup = async (req, res) => {
-    const user = new User(req.body)
+exports.getUserByid = async (req, res) => {
     try{
-        const savedUser = await user.save()
-        const publicProfile = savedUser.getPublicProfile()
-        res.status(201).send(publicProfile)
-    }
-    catch (e) {
-        res.status(400).send(e)
-    }
-}
+        const user = await User.findById(req.params.id)
 
-exports.signin = async (req, res) => {
-    try{
-        const user = await User.findByCredentials(req.body)
+        if(!user){
+            return res.status(404).send()
+        }
         const publicProfile = user.getPublicProfile()
-        const token = await user.createWebToken()
-        res.cookie('tkn', token, { expire: new Date() + 9999 })
-        res.status(200).send({ user: publicProfile, token })
+        res.send(publicProfile)
     } catch (e) {
-        res.status(404).send(e)
+        res.status(500).send()
     }
-}
-
-exports.signout = (req, res) => {
-    res.clearCookie('tkn')
-    res.status(200).send({ message: 'signout successfull' })
 }

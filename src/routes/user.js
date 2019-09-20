@@ -1,24 +1,8 @@
-const router = require('express').Router();
-const { signup, signin, signout } = require('../controllers/user')
+const router = require('express').Router()
 const auth = require('../middleware/auth')
+const { getUserByid } = require('../controllers/user')
 
-
-// user sign up route
-router.post('/signup', signup)
-
-// user sign in route
-router.post('/signin', signin)
-
-// user sign out route
-router.get('/signout', signout)
-
-router.get('/', (req, res) => {
-    res.send('route working')
-})
-
-router.get('/middle', auth, (req, res) => {
-   // const publicProfile
-})
-
+// get user by id
+router.get('/users/:id',auth, getUserByid)
 
 module.exports = router

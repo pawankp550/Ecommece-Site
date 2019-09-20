@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const cookieparser = require('cookie-parser')
 
 require('dotenv').config()
+const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 
 // database connection
@@ -30,6 +31,7 @@ app.use(morgan('dev'))
 app.use(cookieparser())
 
 // user Route
+app.use('/api', authRouter)
 app.use('/api', userRouter)
 
 const PORT = process.env.port || 3000
