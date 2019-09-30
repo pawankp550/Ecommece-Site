@@ -7,6 +7,8 @@ const cookieparser = require('cookie-parser')
 require('dotenv').config()
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
+const categoryRouter = require('./routes/category')
+const productRouter = require('./routes/product')
 
 // database connection
 mongoose.connect(process.env.DataBaseString, { useNewUrlParser: true,
@@ -30,9 +32,11 @@ app.use(morgan('dev'))
 // cookie parser middleware
 app.use(cookieparser())
 
-// user Route
+// Routes
 app.use('/api', authRouter)
 app.use('/api', userRouter)
+app.use('/api', categoryRouter)
+app.use('/api', productRouter)
 
 const PORT = process.env.port || 3000
 
