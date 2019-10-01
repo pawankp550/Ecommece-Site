@@ -29,7 +29,10 @@ const upload = multer({
     }
 });
 
-
+// create product
 Router.post('/product/create', upload.single('imageData'), create)
+
+// get product
+Router.get('/product/:id', getProductById)
 
 module.exports = Router
