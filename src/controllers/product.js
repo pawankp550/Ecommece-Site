@@ -19,7 +19,31 @@ exports.create = async (req, res) => {
      }
 }
 
+exports.getProductById = async (req, res) => {
+    console.log(req.params.id)
+    try{
+        const product = await Product.findById(req.params.id)
 
-exports.getById = async (req, res) => {
+        if(!product){
+            return res.status(404).send()
+        }
+        res.send(product)
+    } catch (e) {
+        res.status(500).send()
+    }
+}
 
+exports.deleteProductById = async (req, res) => {
+    try{
+        const product = await Product.findByIdAndRemove(req.params.id)
+
+        if(!product){
+            return res.status(404).send()
+        }
+        res.send({
+            message: 'item deleted successfully'
+        })
+    } catch (e) {
+        res.status(500).send()
+    }
 }
