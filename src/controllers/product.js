@@ -35,7 +35,7 @@ exports.getProductById = async (req, res) => {
 
 exports.deleteProductById = async (req, res) => {
     try{
-        const product = await Product.findByIdAndRemove(req.params.id)
+        const product = await Product.findOneAndDelete({_id: req.params.id})
 
         if(!product){
             return res.status(404).send()
@@ -46,4 +46,10 @@ exports.deleteProductById = async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
+}
+
+exports.updateProductById = async (req, res) => {
+    try{
+        console.log('Update api incomplete!!!!!!!')
+    } catch (e) {}
 }

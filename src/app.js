@@ -3,6 +3,8 @@ const app = express()
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const cookieparser = require('cookie-parser')
+const bodyParser = require('body-parser')
+
 
 require('dotenv').config()
 const authRouter = require('./routes/auth')
@@ -25,6 +27,10 @@ mongoose.connect(process.env.DataBaseString, { useNewUrlParser: true,
 
 // parse data from request body middleware
 app.use(express.json())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(express.static('public'))
 
 // HTTP request logger middleware
 app.use(morgan('dev'))
