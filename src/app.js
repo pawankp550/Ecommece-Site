@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const cookieparser = require('cookie-parser')
 const bodyParser = require('body-parser')
+var cors = require('cors')
 
 
 require('dotenv').config()
@@ -24,6 +25,9 @@ mongoose.connect(process.env.DataBaseString, { useNewUrlParser: true,
     .catch((e) => {
         console.log(e)
     })
+
+// cors setting
+app.use(cors())
 
 // parse data from request body middleware
 app.use(express.json())

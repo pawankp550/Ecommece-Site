@@ -1,5 +1,5 @@
 const Router = require('express').Router()
-const { create, getProductById, deleteProductById, updateProductById } = require('../controllers/product')
+const { create, getProductById, deleteProductById, updateProductById, listProducts, listRelatedProducts, listCategories, listBySearch } = require('../controllers/product')
 const path = require('path')
 const auth = require('../middleware/auth')
 const { isAdmin } = require('../middleware/authorization')
@@ -34,6 +34,10 @@ const upload = multer({
 // create product
 Router.post('/product/create', auth, isAdmin, upload.single('imageData'), create)
 
+
+// list categories
+Router.get('/product/categories', listCategories)
+
 // get product
 Router.get('/product/:id', getProductById)
 
@@ -42,5 +46,16 @@ Router.delete('/product/:id', auth, isAdmin, deleteProductById)
 
 // update product
 Router.patch('/product/:id',  upload.single('imageData'), updateProductById)
+
+// get products
+Router.get('/product', listProducts)
+
+// get relatedItems
+Router.get('/product/related/:id', listRelatedProducts)
+
+// get bySearch
+Router.post("/products/by/search", listBySearch)
+
+
 
 module.exports = Router

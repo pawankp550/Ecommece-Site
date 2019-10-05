@@ -22,12 +22,16 @@ const productSchema = new Schema({
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category,',
+        ref: 'Category',
         required: true
     },
     quantity: {
         type: Number
     },
+    sold: {
+            type: Number,
+            default: 0
+        },
     photo: {
         type: String,
         required: true
