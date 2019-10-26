@@ -5,7 +5,6 @@ const cookieparser = require('cookie-parser')
 const bodyParser = require('body-parser')
 var cors = require('cors')
 
-console.log(require('dotenv').config())
 require('dotenv').config()
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
@@ -37,7 +36,7 @@ app.use('/api', userRouter)
 app.use('/api', categoryRouter)
 app.use('/api', productRouter)
 
-const PORT = process.env.port || 3000
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
     console.log('server started')
