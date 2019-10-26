@@ -9,7 +9,8 @@ exports.signup = async (req, res) => {
         res.status(201).send(publicProfile)
     }
     catch (e) {
-        res.status(400).send(e)
+        console.log(e)
+        res.status(409).json({error: e})
     }
 }
 

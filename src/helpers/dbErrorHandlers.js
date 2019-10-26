@@ -6,7 +6,8 @@
 const uniqueMessage = error => {
     let output;
     try {
-        let fieldName = error.message.substring(
+        coinsole.log(error)
+        let fieldName = error.errmsg.substring(
             error.message.lastIndexOf(".$") + 2,
             error.message.lastIndexOf("_1")
         );
@@ -37,9 +38,9 @@ exports.errorHandler = error => {
                 message = "Something went wrong";
         }
     } else {
-        for (let errorName in error.errorors) {
-            if (error.errorors[errorName].message)
-                message = error.errorors[errorName].message;
+        for (let errorName in error.errors) {
+            if (error.errors[errorName].message)
+                message = error.errors[errorName].message;
         }
     }
 

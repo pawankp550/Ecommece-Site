@@ -5,6 +5,7 @@ const cookieparser = require('cookie-parser')
 const bodyParser = require('body-parser')
 var cors = require('cors')
 
+console.log(require('dotenv').config())
 require('dotenv').config()
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')

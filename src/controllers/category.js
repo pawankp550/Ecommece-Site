@@ -53,7 +53,7 @@ exports.deleteCategory = async (req, res) => {
     }
 }
 exports.getCategories = async (req, res) => {
-    console.log('in get cat')
+    // console.log('in get cat')
     try {
         const categories = await Category.find({})
 
