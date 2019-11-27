@@ -22,7 +22,7 @@ exports.signin = async (req, res) => {
         res.cookie('tkn', token, { expire: new Date() + 9999 })
         res.status(200).send({ user: publicProfile, token })
     } catch (e) {
-        res.status(404).send(e)
+        res.status(404).json({error: e})
     }
 }
 
