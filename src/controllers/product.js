@@ -1,12 +1,19 @@
 const Product = require('../models/product')
 
 exports.create = async (req, res) => {
-     const productObj = {
+    console.log(req.files.map(item => {
+        return item.path
+    }))
+
+    const productImages = req.files.map(item => {
+            return item.path
+        })
+    const productObj = {
          ...req.body,
-         photo: req.file.path
+         photo: productImages
      }
 
-         const product = new Product(productObj)
+    const product = new Product(productObj)
      try{
          const savedProduct = await product.save()
          console.log(savedProduct)

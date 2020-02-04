@@ -32,7 +32,7 @@ const upload = multer({
 });
 
 // create product
-Router.post('/product/create', auth, isAdmin, upload.single('imageData'), create)
+Router.post('/product/create', auth, isAdmin, upload.array('imageData', 12), create)
 
 
 // list categories
