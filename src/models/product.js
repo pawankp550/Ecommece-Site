@@ -33,8 +33,7 @@ const productSchema = new Schema({
             default: 0
         },
     photo: {
-        type: Array,
-        required: true
+        type: String
     },
     shipping: {
         type: Boolean

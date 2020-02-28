@@ -1,29 +1,36 @@
 const Product = require('../models/product')
 
+const cloudinary = require("cloudinary")
+
+cloudinary.config({
+  cloud_name: "pavank9738",
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
 exports.create = async (req, res) => {
-    console.log(req.files.map(item => {
-        return item.path
-    }))
+    try{
+        cloudinary.v2.uploader.upload(req.file.path, async function(err, result) {
+            if (err) {
+                return res.status(500).send(err.message)
+            }
 
-    const productImages = req.files.map(item => {
-            return item.path
-        })
-    const productObj = {
-         ...req.body,
-         photo: productImages
-     }
-
-    const product = new Product(productObj)
-     try{
-         const savedProduct = await product.save()
-         console.log(savedProduct)
-         if(!savedProduct){
-            return res.status(400).send()
-         }
-         res.status(200).send()
-     } catch (e) {
-         res.status(500).send(e)
-     }
+            const productObj = {
+                ...req.body,
+                photo: result.secure_url
+            }
+        
+            const product = new Product(productObj)
+                    const savedProduct = await product.save()
+                    console.log(savedProduct)
+                    if(!savedProduct){
+                        return res.status(400).send()
+                    }
+                    res.status(200).send()
+           
+        })} catch (e) {
+                res.status(500).send(e)
+            }
 }
 
 exports.getProductById = async (req, res) => {
