@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.DataBaseString, { useNewUrlParser: true,
         useCreateIndex: true,
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        autoIndex: true
     })
     .then(() => {
         console.log('db connected')
