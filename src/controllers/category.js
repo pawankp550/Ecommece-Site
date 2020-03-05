@@ -1,4 +1,5 @@
 const Category = require('../models/category')
+const { errorHandler } = require("../helpers/dbErrorHandlers"); 
 
 exports.create = async (req, res) => {
     const category = new Category(req.body)
@@ -6,8 +7,10 @@ exports.create = async (req, res) => {
     try{
         const savedCategory = await category.save()
         res.status(201).send(savedCategory)
-    } catch (e) {
-        res.status(500).send(e)
+    } catch (err) {
+        res.status(400).json({
+                error: errorHandler(err)
+            });
     }
 }
 
@@ -19,8 +22,10 @@ exports.getCategoryById = async (req, res) => {
             return res.status(404).send()
         }
         res.send(category)
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 
@@ -34,8 +39,10 @@ exports.updateCategory = async (req, res) => {
         category.name = req.body.name
         await category.save()
         res.send(category)
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 
@@ -48,19 +55,22 @@ exports.deleteCategory = async (req, res) => {
         }
 
         res.status(200).send(category)
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 exports.getCategories = async (req, res) => {
-    // console.log('in get cat')
     try {
         const categories = await Category.find({})
 
         if (!categories) return res.status(404).send()
 
         res.send(categories)
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
