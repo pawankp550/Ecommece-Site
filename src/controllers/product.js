@@ -1,4 +1,5 @@
 const Product = require('../models/product')
+const { errorHandler } = require("../helpers/dbErrorHandlers"); 
 
 const cloudinary = require("cloudinary")
 
@@ -9,28 +10,39 @@ cloudinary.config({
 })
 
 exports.create = async (req, res) => {
-    try{
-        cloudinary.v2.uploader.upload(req.file.path, async function(err, result) {
-            if (err) {
-                return res.status(500).send(err.message)
-            }
+    try {
+         cloudinary.v2.uploader.upload(req.file.path, async function(err, result) {
+        if (err) {
+            return res.status(500).json({
+            error: errorHandler(err)
+        });
+        }
 
-            const productObj = {
-                ...req.body,
-                photo: result.secure_url
-            }
-        
+        const productObj = {
+            ...req.body,
+            photo: result.secure_url
+        }
+
+        try {
             const product = new Product(productObj)
-                    const savedProduct = await product.save()
-                    console.log(savedProduct)
-                    if(!savedProduct){
-                        return res.status(400).send()
-                    }
-                    res.status(200).send()
-           
-        })} catch (e) {
-                res.status(500).send(e)
-            }
+                const savedProduct = await product.save()
+                if(!savedProduct){
+                        return res.status(400).json({
+                        error: errorHandler(err)
+                    });
+                }
+                    res.status(200).send(savedProduct)
+        } catch (err) {
+            res.status(500).json({
+            error: errorHandler(err)
+        });
+        }   
+    })
+    } catch(err) {
+         res.status(500).json({
+            error: errorHandler(err)
+        });
+    }
 }
 
 exports.getProductById = async (req, res) => {
@@ -39,11 +51,15 @@ exports.getProductById = async (req, res) => {
         const product = await Product.findById(req.params.id)
 
         if(!product){
-            return res.status(404).send()
+            return res.status(404).json({
+                error: errorHandler(err)
+            });
         }
         res.send(product)
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 
@@ -52,13 +68,17 @@ exports.deleteProductById = async (req, res) => {
         const product = await Product.findOneAndDelete({_id: req.params.id})
 
         if(!product){
-            return res.status(404).send()
+            return res.status(404).json({
+                error: errorHandler(err)
+            });
         }
         res.send({
             message: 'item deleted successfully'
         })
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 
@@ -77,17 +97,20 @@ exports.listProducts =  async (req, res) => {
         const products = await Product.find().populate("category").limit(limit).sort([[sortBy, sortType]]).exec()
 
         if (!products) {
-            return res.status(404).send()
+            return res.status(404).json({
+                error: errorHandler(err)
+            });
         }
 
         res.send(products)
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 
 exports.listRelatedProducts = async (req, res) => {
-    console.log('related products')
     try{
         const sortType = req.query.sortType ? req.query.sortType : 'desc'
         const sortBy = req.query.sortBy ? req.query.sortBy : 'sold'
@@ -105,8 +128,10 @@ exports.listRelatedProducts = async (req, res) => {
 
         res.send(relatedProducts)
 
-    } catch (e) {
-        res.status(500)
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 
@@ -120,14 +145,15 @@ exports.listCategories = async (req, res) => {
         }
 
         res.send(categories)
-    } catch {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 }
 
 
 exports.listBySearch = async (req, res) => {
-    console.log('listBySearch')
     let order = req.body.order ? req.body.order : "desc";
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
     let limit = req.body.limit ? parseInt(req.body.limit) : 100;
@@ -164,8 +190,10 @@ exports.listBySearch = async (req, res) => {
     }
 
     res.send(products)
-    } catch (e) {
-        res.status(500).send()
+    } catch (err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
     }
 
 }
