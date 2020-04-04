@@ -186,7 +186,10 @@ exports.listBySearch = async (req, res) => {
         return res.status(404).send({ error: 'products not found' })
     }
 
-    res.send(products)
+    res.json({
+        size: products.length,
+        products
+    });
     } catch (err) {
         res.status(500).json({
                 error: errorHandler(err)
