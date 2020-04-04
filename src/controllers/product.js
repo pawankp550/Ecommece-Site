@@ -46,7 +46,6 @@ exports.create = async (req, res) => {
 }
 
 exports.getProductById = async (req, res) => {
-    console.log(req.params.id)
     try{
         const product = await Product.findById(req.params.id)
 
@@ -136,7 +135,6 @@ exports.listRelatedProducts = async (req, res) => {
 }
 
 exports.listCategories = async (req, res) => {
-    console.log('in')
     try {
         const categories = await Product.distinct('category')
 
@@ -177,7 +175,6 @@ exports.listBySearch = async (req, res) => {
                 }
             }
     }
-    console.log(findArgs)
     const products = await Product.find(findArgs)
         .populate("category")
         .sort([[sortBy, order]])
@@ -196,4 +193,30 @@ exports.listBySearch = async (req, res) => {
             });
     }
 
+}
+
+exports.listSearched = async (req, res) => {
+    const query = {}
+    try {
+        if (req.query.name) {
+            query.name = { $regex: req.query.name, $options: 'i' }
+            if(req.query.category) {
+                query.category = req.query.category            
+            }
+        }
+    
+        const products = await Product.find(query)
+        .populate("category")
+        .exec()
+    
+        if(!products) {
+            return res.status(404).send({ error: 'products not found' })
+        }
+        res.status(200).send(products)
+
+    } catch(err) {
+        res.status(500).json({
+                error: errorHandler(err)
+            });
+    }
 }

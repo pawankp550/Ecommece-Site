@@ -1,5 +1,15 @@
 const Router = require('express').Router()
-const { create, getProductById, deleteProductById, updateProductById, listProducts, listRelatedProducts, listCategories, listBySearch } = require('../controllers/product')
+const { 
+    create, getProductById, 
+    deleteProductById, 
+    updateProductById, 
+    listProducts, 
+    listRelatedProducts, 
+    listCategories, 
+    listBySearch,
+    listSearched 
+} = require('../controllers/product')
+
 const auth = require('../middleware/auth')
 const { isAdmin } = require('../middleware/authorization')
 const upload = require('../middleware/multer')
@@ -28,8 +38,11 @@ Router.get('/product', listProducts)
 // get relatedItems
 Router.get('/product/related/:id', listRelatedProducts)
 
-// get bySearch
+// get by filter
 Router.post("/products/by/search", listBySearch)
+
+// get by search
+Router.get("/products/search", listSearched)
 
 
 module.exports = Router
