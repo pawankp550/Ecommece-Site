@@ -121,6 +121,8 @@ exports.listRelatedProducts = async (req, res) => {
         }
 
         const relatedProducts = await Product.find({ _id: { $ne: req.params.id }, category : product.category })
+        .limit(limit).sort([[sortBy, sortType]]).exec()
+
         if (!relatedProducts) {
             return res.status(400).send({ error: 'no related products found' })
         }
