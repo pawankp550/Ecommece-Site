@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
         if (!user) {
             throw new Error
         }
-         console.log('auth done')
+        console.log('auth done')
         req.user = user
         req.token = token
         next()

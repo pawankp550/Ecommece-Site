@@ -9,5 +9,4 @@ router.get('/users/:id', auth, isUserOrAdmin, getUserByid)
 // update user profile
 router.put('/users/:id', auth, isUserOrAdmin, updateUser)
 
-const Router = require('express').Router()
 module.exports = router
