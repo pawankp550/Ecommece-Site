@@ -16,3 +16,23 @@ exports.generateToken = async (req, res) => {
         }
     })
 }
+
+exports.processPayment = (req, res) => {
+    console.log('in processPayment')
+    let nonceFromTheClient = req.body.paymentMethodNonce
+    let amountFromClient = req.body.amountFromClient
+
+    gateway.transaction.sale({
+            amount: amountFromClient,
+            paymentMethodNonce: nonceFromTheClient,
+            options: {
+                submitForSettlement: true
+            }
+        }, function (err, result) {
+            if(err) {
+                res.status(500).json(err)
+            } else {
+                res.json(result)
+            }
+    })
+}
