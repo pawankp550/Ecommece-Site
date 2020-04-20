@@ -74,7 +74,7 @@ userSchema.methods.getPublicProfile = function () {
     return userObject
 }
 
-// check is user is present and authenticate
+// check if user is present and authenticate
 userSchema.statics.findByCredentials = async function ({email, password}) {
     const user = await User.findOne({ email: email })
     if (!user) {

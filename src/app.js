@@ -10,6 +10,7 @@ const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 const categoryRouter = require('./routes/category')
 const productRouter = require('./routes/product')
+const orderRouter = require('./routes/order')
 const BraintreeRouter = require('./routes/braintree')
 
 // db connection
@@ -37,6 +38,7 @@ app.use('/api', userRouter)
 app.use('/api', categoryRouter)
 app.use('/api', productRouter)
 app.use('/api', BraintreeRouter)
+app.use('/api', orderRouter)
 
 const PORT = process.env.PORT || 3000
 
