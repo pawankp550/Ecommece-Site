@@ -4,7 +4,7 @@ exports.isUser = async (req, res, next) => {
             next()
             }
         else {
-        res.status(402).send('unauthorized')
+        res.status(401).send('unauthorized')
         }
     } catch (e) {
         res.status(500).send()
@@ -18,7 +18,7 @@ exports.isAdmin = async (req, res, next) => {
             next()
             }
         else {
-        res.status(402).send('unauthorized')
+        res.status(401).send('unauthorized')
         }
     } catch (e) {
         res.status(500).send()
@@ -31,7 +31,7 @@ exports.isUserOrAdmin = (req, res, next) => {
             next()
             }
         else {
-        res.status(402).send('unauthorized')
+        res.status(401).send('unauthorized')
         }
     } catch (e) {
         res.status(500).send()
