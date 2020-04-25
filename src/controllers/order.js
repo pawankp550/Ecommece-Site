@@ -42,3 +42,15 @@ exports.listAllOrders = async (req, res) => {
         })
     } 
 }
+
+exports.listOrderStatuses = async (req, res) => {
+    try {
+            const statuses = Order.schema.path('status').enumValues
+            res.json(statuses)
+            
+        } catch (err) {
+            res.status(500).json({
+            error: errorHandler(err)
+        })
+    } 
+}
