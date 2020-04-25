@@ -54,3 +54,26 @@ exports.listOrderStatuses = async (req, res) => {
         })
     } 
 }
+
+
+
+exports.changeOrderStatus = async (req, res) => {
+     try {
+            const order = await Order.findByIdAndUpdate(
+                { _id: req.body.orderId },
+                { $set: { status: req.body.status }},
+                {new: true}
+            )
+            .exec() 
+           
+            if(!order) {
+                return res.status(400).json({error: 'could not find order'})
+            }
+            
+            res.json(order)
+        } catch (err) {
+            res.status(500).json({
+            error: errorHandler(err)
+        })
+    } 
+}
