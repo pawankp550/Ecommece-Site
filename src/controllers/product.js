@@ -51,8 +51,8 @@ exports.getProductById = async (req, res) => {
 
         if(!product){
             return res.status(404).json({
-                error: errorHandler(err)
-            });
+            error: 'coud not find product'
+        })
         }
         res.send(product)
     } catch (err) {
@@ -68,8 +68,8 @@ exports.deleteProductById = async (req, res) => {
 
         if(!product){
             return res.status(404).json({
-                error: errorHandler(err)
-            });
+            error: 'coud not find product'
+        })
         }
         res.send({
             message: 'item deleted successfully'
