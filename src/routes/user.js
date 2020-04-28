@@ -11,7 +11,7 @@ router.get('/users/:id', auth, isUserOrAdmin, getUserByid)
 router.put('/users/:id', auth, isUserOrAdmin, updateUser)
 
 // get order details
-router.get('/users/order/details', auth, getOrdersByid)
+router.post('/users/order/details', auth, getOrdersByid)
 
 
 module.exports = router
