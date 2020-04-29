@@ -8,7 +8,8 @@ const cartItemSchema = new Schema({
     },
     name: String,
     price: String,
-    count: Number
+    count: Number,
+    photo: String
 },
 { timestamps: true }
 );
