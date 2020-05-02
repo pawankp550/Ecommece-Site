@@ -4,7 +4,7 @@ const { errorHandler } = require("../helpers/dbErrorHandlers");
 const cloudinary = require("cloudinary")
 
 cloudinary.config({
-  cloud_name: "pavank9738",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 })
@@ -45,6 +45,55 @@ exports.create = async (req, res) => {
     }
 }
 
+// update product details without image
+exports.updateProductById = async (req, res) => {
+    console.log(req.params.id)
+    console.log(req.body)
+    try {
+        const filter = {_id: req.params.id}
+        const update = req.body
+        const opts = { new: true }
+
+        const product = await Product.findOneAndUpdate(filter, update, opts)
+
+        if (!product) {
+            res.status(404).json({
+                error: 'could not find product'
+            })
+        }
+        res.send(product)
+    } catch (err) {
+            res.status(500).json({
+            error: 'could not update'
+        });
+    } 
+}
+
+// update product image without details
+exports.updateProductImageById = async (req, res) => {
+    console.log('in updateProductImageById')
+    cloudinary.v2.uploader.upload(req.file.path, async function(err, result) {
+        if (err) {
+            return res.status(500).json({
+            error: errorHandler(err)
+        });
+        }
+        console.log(result)
+        const filter = {_id: req.params.id}
+        const update = {photo: result.secure_url}
+        const opts = { new: true }
+
+        const product = await Product.findOneAndUpdate(filter, update, opts)
+
+        if (!product) {
+            res.status(404).json({
+                error: 'could not find product'
+            })
+        }
+        res.send(product)
+    })
+}
+
 exports.getProductById = async (req, res) => {
     try{
         const product = await Product.findById(req.params.id).populate("category")
@@ -79,12 +128,6 @@ exports.deleteProductById = async (req, res) => {
                 error: errorHandler(err)
             });
     }
-}
-
-exports.updateProductById = async (req, res) => {
-    try{
-        console.log('Update api incomplete!!!!!!!')
-    } catch (e) {}
 }
 
 exports.listProducts =  async (req, res) => {

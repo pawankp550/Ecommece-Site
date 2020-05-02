@@ -7,7 +7,8 @@ const {
     listRelatedProducts, 
     listCategories, 
     listBySearch,
-    listSearched 
+    listSearched,
+    updateProductImageById 
 } = require('../controllers/product')
 
 const auth = require('../middleware/auth')
@@ -29,8 +30,13 @@ Router.get('/product/:id', getProductById)
 // remove product
 Router.delete('/product/:id', auth, isAdmin, deleteProductById)
 
-// update product
-Router.patch('/product/:id',  upload.single('imageData'), updateProductById)
+// update product details only
+Router.patch('/product/:id',  auth, isAdmin, updateProductById)
+
+// update product image only
+Router.patch('/product/image/:id', auth, isAdmin, upload.single('imageData'), updateProductImageById, (error, req, res, next) => {
+ res.status(400).send({ error: error.message })
+})
 
 // get products
 Router.get('/product', listProducts)
