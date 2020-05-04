@@ -72,7 +72,9 @@ exports.updateProductById = async (req, res) => {
 // update product image without details
 exports.updateProductImageById = async (req, res) => {
     console.log('in updateProductImageById')
-    cloudinary.v2.uploader.upload(req.file.path, async function(err, result) {
+
+    try {
+        cloudinary.v2.uploader.upload(req.file.path, async function(err, result) {
         if (err) {
             return res.status(500).json({
             error: errorHandler(err)
@@ -92,6 +94,11 @@ exports.updateProductImageById = async (req, res) => {
         }
         res.send(product)
     })
+    } catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
 }
 
 exports.getProductById = async (req, res) => {
